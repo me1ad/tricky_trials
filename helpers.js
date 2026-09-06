@@ -1,15 +1,9 @@
-function setup_new_table(name, _table){
-    number_of_tables += 1;
-    let title = document.createElement("h2");
-    if (name == ""){
-        title.innerHTML = "Table " + number_of_tables;
-    } else {
-        title.innerHTML = name;
-    }
+function deleteParent() {
+    this.parentElement.remove()
     
-    console.log(title);
-    table_container.appendChild(title);
-    table_container.appendChild(_table);
+}
+function deleteGrandParent(){
+    this.parentElement.parentElement.remove()
 }
 
 function checkElementHasValue(input){
@@ -28,35 +22,11 @@ function checkElementIsInput(element){
     return (element.tagName == "INPUT");
 }
 
-function makeTable(rows,cols,trial){
-    const table = document.createElement("table")
-    for (let i = 0; i < rows; i++){
-        
-        const row = document.createElement("tr");
-        
-        for (let j = 0; j < cols; j++){
-            
-            const cell = document.createElement("td");
-            let inp = document.createElement("input");
-            
-            if (trial && i == 0){
-                if (j == 0){
-                    inp.setAttribute("value","Trial");
-                } else {
-                    inp.setAttribute("value",j);
-                }
-            }
-
-            cell.appendChild(inp);
-            row.appendChild(cell);
-        }
-
-        row.appendChild(deleteCell());
-        table.appendChild(row);
-    }
-    table.setAttribute("rows",rows);
-    table.setAttribute("cols",cols);
-    return table;
+function makeButton(text){
+    const button = document.createElement("button");
+    button.innerHTML = text;
+    button.style.padding = "2%";
+    return button
 }
 
 function addRowName(){
@@ -74,4 +44,27 @@ function _addRowName(name){
     del_but.addEventListener("click", deleteParent);
     el.appendChild(del_but);
     list.appendChild(el);
+}
+
+function deleteCell() {
+    const cell = document.createElement("td");
+    const button = document.createElement("button");
+
+    button.textContent = "Delete Row";
+    button.addEventListener("click", deleteGrandParent);
+
+    button.style.width = "100%";
+    button.style.height = "100%";
+    button.style.border = "none";
+    button.style.outline = "none";
+    button.style.background = "transparent";
+    
+    cell.style.background = "crimson";
+    cell.style.width = "10%";
+    cell.style.border = "2px solid crimson";
+
+    cell.classList.add("no-copy");
+
+    cell.appendChild(button);
+    return cell;
 }

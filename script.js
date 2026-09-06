@@ -8,102 +8,115 @@ function start(){
     _addRowName("Trials");
 }
 
-function deleteParent() {
-    this.parentElement.remove()
-    
-}
-function deleteGrandParent(){
-    this.parentElement.parentElement.remove()
-}
+async function copyTable(table) {
 
-function deleteCell() {
-    const cell = document.createElement("td");
-    const button = document.createElement("button");
+    const copy = table.cloneNode(true);
+    const numberOfColumns = table.children[0].children.length;
+    const numberOfRows = table.children.length;
 
-    button.textContent = "Delete Row";
-    button.addEventListener("click", deleteGrandParent);
+    // Copy computed styles BEFORE removing/replacing elements
+    const originalElements = [
+        table,
+        ...table.querySelectorAll("*")
+    ];
 
-    button.style.width = "100%";
-    button.style.height = "100%";
-    button.style.border = "none";
-    button.style.outline = "none";
-    button.style.background = "transparent";
-    
-    cell.style.background = "crimson";
-    cell.style.width = "10%";
-    cell.style.border = "2px solid crimson";
+    const copiedElements = [
+        copy,
+        ...copy.querySelectorAll("*")
+    ];
 
-    cell.appendChild(button);
-    return cell;
-}
+    originalElements.forEach((original, i) => {
 
-function createTableFromScratch() {
-    const rows_input = document.getElementById("rows");
-    const cols_input = document.getElementById("columns");
-    const name_input = document.getElementById("scratch-name");
+        const copied = copiedElements[i];
 
-    console.log(rows_input, cols_input);
+        if (!copied) return;
 
-    if (!checkElementHasValue(rows_input) || !checkElementHasValue(cols_input)){
-        document.getElementById("error-scratch").style.display = "inline";
-        return null
-    } else {
-        document.getElementById("error-scratch").style.display = "none";
-    }
+        const style = getComputedStyle(original);
 
-    var rows = parseInt(rows_input.value);
-    var cols = parseInt(cols_input.value);
-    const trials = document.getElementById("trial-option").value;
+        copied.style.border = style.border;
+        copied.style.fontFamily = style.fontFamily;
+        copied.style.fontSize = style.fontSize;
+        copied.style.fontWeight = style.fontWeight;
+        copied.style.fontStyle = style.fontStyle;
+        copied.style.textAlign = style.textAlign;
+        copied.style.verticalAlign = style.verticalAlign;
+        copied.style.backgroundColor = style.backgroundColor;
+        copied.style.color = style.color;
+    });
 
-    const table = makeTable(rows,cols,trials);
-    var name = name_input.value.trim();
-    
-    setup_new_table(name, table);
-    name_input.value = "";
-}
+    // equal cell widths
+    copy.querySelectorAll("td, th").forEach(cell => {
+        cell.style.width = `${100 / numberOfColumns}%`;
+        cell.style.height = "50px";
 
-function createPrefabTable(){
-    const cols_input = document.getElementById("col-prefab");
-    const row_list = document.getElementById("row-list");
-    const row_list_children = row_list.children;
-    const name_input = document.getElementById("prefab-name");
+        if (cell.children.length === 0 && cell.textContent.trim() === "") {
+            cell.appendChild(document.createTextNode("\u00A0"));
+        }
+    });
 
-    if (!checkElementHasValue(cols_input)){
-       document.getElementById("error-trial").style.display = "inline";
-        return null
-    } else {
-        document.getElementById("error-trial").style.display = "none";
-    }
-    
-    var cols = parseInt(cols_input.value) + 1;
-    var rows = row_list.children.length;
+    // Remove things that shouldn't appear in Word
+    copy.querySelectorAll(".no-copy").forEach(element => {
+        element.remove();
+    });
 
-    if (rows == 0){
-        document.getElementById("error-rows").style.display = "inline";
-        return null
-    } else {
-        document.getElementById("error-rows").style.display = "none";
-    }
+    // Replace inputs with their current values
+    copy.querySelectorAll("input, textarea, select").forEach(element => {
 
-    const table = makeTable(rows,cols,false);
-    var name = name_input.value.trim();
+        let value = "";
 
-    for (let tr = 0; tr < rows; tr++){
-        let row = row_list_children[tr];
-        let row_name = row.firstChild.textContent.trim();
-        let table_row_children = table.children[tr].children; //table>row>cellList
+        if (element.tagName === "SELECT") {
 
-        table_row_children[0].firstChild.value = row_name; // cell>input>value
-        console.log(row_name.toLowerCase() + "includes 'trial': " + row_name.toLowerCase().includes("trial"));
-        if (row_name.toLowerCase().includes("trial")){
-            for (let td = 1; td < cols; td++){
-                console.log(table_row_children);
-                let inp = table_row_children[td].firstChild;
-                inp.setAttribute("value",td);
+            if (element.selectedIndex >= 0) {
+                value = element.options[element.selectedIndex].text;
             }
+
+        } else {
+            value = element.value;
+        }
+
+        element.replaceWith(document.createTextNode(value));
+    });
+
+    // Make sure Word treats it as a table
+    copy.style.borderCollapse = "collapse";
+    copy.style.fontSize = "10pt";
+    copy.style.width = "80%";
+
+    copy.querySelectorAll("th, td").forEach(cell => {
+        cell.style.padding = "3px";
+        cell.style.fontSize = "10pt";
+    });
+
+    const html = copy.outerHTML;
+    const text = copy.innerText;
+
+    await navigator.clipboard.write([
+        new ClipboardItem({
+            "text/html": new Blob(
+                [html],
+                { type: "text/html" }
+            ),
+            "text/plain": new Blob(
+                [text],
+                { type: "text/plain" }
+            )
+        })
+    ]);
+}
+
+
+function getTableN(n){
+    for (const table of table_container.children){
+        if (table.tagName == "TABLE" && table.getAttribute("number") == n){
+            console.log("Table found");
+            return table;
         }
     }
+    console.log("Table not found");
+    return null;
+}
 
-    setup_new_table(name, table);
-    name_input.value = "";
+function copyTableN(){
+    let n = this.getAttribute("number");
+    copyTable(getTableN(n));
 }
