@@ -1,53 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Tricky Trials</title>
+        <title>M31ad's Domain</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <script src="script.js"></script>
-        <script src="helpers.js"></script>
-        <script src="tables.js"></script>
+        <script src="equations.js"></script>
     </head>
-    <body onload="start()">
-        <div id="top">
-            <h1>Tricky Trials</h1>
-            <div id="create-table">
-            
-            <div id="prefab-table">
-
-                <h2>New Prefabricated Table</h2>
-                <input id="prefab-name" placeholder="Enter Table Name">
-                <input id="col-prefab" placeholder="Enter Trial Count">
-                <p id="error-trial" style="display:none">Please input a value for the trial count.</p>
-                <br>
-                <input id="row-namer" placeholder="Enter Row Name">
-                <button onclick="addRowName()">Add Row</button>
-                <p id="error-rows" style="display:none">Add at least one row.</p>
-                <br>
-                <ol id="row-list"></ol>
-                <br>
-                <button onclick="createPrefabTable()">Create Table</button>
-
-            </div>
-
-            <div id="table-from-scratch">
-
-                <h2>New Table</h2>
-                <input id="scratch-name" placeholder="Enter Table Name">
-                <input id="rows" placeholder="Enter Rows">
-                <input id="columns" placeholder="Enter Columns">
-                <p>Fill First Row <input id="trial-option" type="checkbox"></p>
-                <button onclick="createTableFromScratch()">Create Table</button>
-                <p id="error-scratch" style="display:none">Please input values for both rows and columns</p>
-
-            </div>
-            </div>
-        </div>
-
-        <div id="table-container"></div>
-        <!-- Table is a div populated with a table, an add row button, a delete row button, and
-        a delete table button. The table is populated with data from the user. -->
-        <p>Hello, welcome to Tricky Trials! Feel free to use this site to analyze trial data.</p>
+    <body>
+        <h1>Hi this is the main page</h1>
+        <a href="trials.html">Here's the Tricky Trials link</a>
+        <br><br>
+        <button onclick="getFreqFromLightEnergy()">Energy -> Frequency</button>
+        <br><br>
+        <button onclick="getHydrogenQuantumEnergy()">Get hydrogen quantum energy</button>
+        <br><br>
+        <button onclick="getElectronEnergyChange()">Get Electron Energy absorbtion/emission from quantum change</button>
+        <br><br>
+        <button onclick="wavelengthLightEnergy()">Energy &lt;-&gt; Wavelength</button>
+        <p id="results">Results: </p>
     </body>
 </html>
