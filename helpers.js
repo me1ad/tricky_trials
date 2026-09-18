@@ -29,24 +29,7 @@ function makeButton(text){
     return button
 }
 
-function addRowName(){
-    const inp = document.getElementById("row-namer");
-    _addRowName(inp.value);
-}
-
-function _addRowName(name){
-    var _name = name.trim() + " ";
-    const list = document.getElementById("row-list");
-    const el = document.createElement("li");
-    el.innerHTML = _name;
-    const del_but = document.createElement("button");
-    del_but.innerHTML = "Remove Row";
-    del_but.addEventListener("click", deleteParent);
-    el.appendChild(del_but);
-    list.appendChild(el);
-}
-
-function deleteCell() {
+function getDeleteCell() {
     const cell = document.createElement("td");
     const button = document.createElement("button");
 

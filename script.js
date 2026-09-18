@@ -5,10 +5,9 @@ let number_of_tables = 0;
 
 function start(){
     table_container = document.getElementById('table-container');
-    _addRowName("Trials");
 }
 
-async function copyTable(table) {
+async function copyTable(table) { // AI Generated
 
     const copy = table.cloneNode(true);
     const numberOfColumns = table.children[0].children.length;

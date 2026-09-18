@@ -1,0 +1,22 @@
+h1, h2 {
+    text-align: center;
+}
+h1 {
+    color: blue;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+body {
+    margin: 0%;
+}
+button {
+    padding: 1%;
+    border-style: solid;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight:300;
+}
+input {
+    padding: 1%;
+}
+.normal {
+    margin: 8px;
+}

@@ -6,52 +6,34 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="base_style.css">
         
         <script src="script.js"></script>
         <script src="helpers.js"></script>
         <script src="tables.js"></script>
     </head>
     <body onload="start()">
-        <div id="top">
+        <div id="top" class="normal">
             <h1>Tricky Trials</h1>
-            <div id="create-table">
-            
-            <div id="prefab-table">
-
-                <h2>New Prefabricated Table</h2>
-                <input id="prefab-name" placeholder="Enter Table Name">
-                <input id="col-prefab" placeholder="Enter Trial Count">
-                <p id="error-trial" style="display:none">Please input a value for the trial count.</p>
-                <br>
-                <input id="row-namer" placeholder="Enter Row Name">
-                <button onclick="addRowName()">Add Row</button>
-                <p id="error-rows" style="display:none">Add at least one row.</p>
-                <br>
-                <ol id="row-list"></ol>
-                <br>
-                <button onclick="createPrefabTable()">Create Table</button>
-
-            </div>
-
-            <div id="table-from-scratch">
-
-                <h2>New Table</h2>
-                <input id="scratch-name" placeholder="Enter Table Name">
-                <input id="rows" placeholder="Enter Rows">
-                <input id="columns" placeholder="Enter Columns">
-                <p>Fill First Row <input id="trial-option" type="checkbox"></p>
-                <button onclick="createTableFromScratch()">Create Table</button>
-                <p id="error-scratch" style="display:none">Please input values for both rows and columns</p>
-
-            </div>
-            </div>
+            <button id="open-create-table" onclick="openCreateTable()" class="normal">Create Table</button>
         </div>
+        <div id="create-table">
+            <button id="close-create-table" onclick="closeCreateTable()">X</button>
+            <h2>New Table</h2>
+            <input id="scratch-name" placeholder="Enter Table Name">
+            <input id="rows" placeholder="Enter Rows">
+            <input id="columns" placeholder="Enter Columns">
+            <p>Fill First Row <input id="trial-option" type="checkbox"></p>
+            <button onclick="createTable()">Create Table</button>
+            <p id="error-scratch" style="display:none">Please input values for both rows and columns</p>
 
+        </div>
+        <p class="normal">For rows you wish to analyze, keep units the same and only put numbers in.</p>
         <div id="table-container">
             <datalist id="table-name-list"></datalist>
         </div>
         <!-- Table is a div populated with a table, an add row button, a delete row button, and
         a delete table button. The table is populated with data from the user. -->
-        <p>Hello, welcome to Tricky Trials! Feel free to use this site to analyze trial data.</p>
+        <p class="normal">Hello, welcome to Tricky Trials! Feel free to use this site to analyze trial data.</p>
     </body>
 </html>
